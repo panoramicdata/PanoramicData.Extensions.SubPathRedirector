@@ -32,7 +32,7 @@ public class RedirectionHandlerTests
     {
         var context = FakeRedirectionContextBuilder
             .CreateBuilder()
-            .ForRequestUrl("/notgoogle/favicon.ico")
+            .ForRequestUrl("/google/favicon.ico")
             .WithSubPathRedirectionAtIndex(0)
             .Build();
 
@@ -46,7 +46,7 @@ public class RedirectionHandlerTests
     {
         var context = FakeRedirectionContextBuilder
             .CreateBuilder()
-            .ForRequestUrl("/notgoogle/favicon.ico")
+            .ForRequestUrl("/google/favicon.ico")
             .WithOptions(FakeSubPathRedirectorOptionsFactory.CreateDefaultTemporaryRedirectOptions())
             .WithSubPathRedirectionAtIndex(0)
             .Build();
@@ -61,7 +61,7 @@ public class RedirectionHandlerTests
     {
         var context = FakeRedirectionContextBuilder
             .CreateBuilder()
-            .ForRequestUrl("/notgoogle/favicon.ico")
+            .ForRequestUrl("/google/favicon.ico")
             .WithSubPathRedirectionAtIndex(0)
             .Build();
 
