@@ -5,13 +5,19 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{054A5B9E-5A7C-401F-AD6E-97C372B91AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanoramicData.Extensions.SubPathRedirector", "Core\PanoramicData.Extensions.SubPathRedirector.csproj", "{160A933F-A8F7-4649-92DE-0DECB7BEF8CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanoramicData.Extensions.SubPathRedirector", "Core\PanoramicData.Extensions.SubPathRedirector.csproj", "{160A933F-A8F7-4649-92DE-0DECB7BEF8CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E24A8C64-0C22-4062-85F3-EC58734F8FD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanoramicData.Extensions.SubPathRedirector.Tests", "Tests\PanoramicData.Extensions.SubPathRedirector.Tests.csproj", "{C720DD10-BA7C-4038-96EA-987DE4D19817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanoramicData.Extensions.SubPathRedirector.Tests", "Tests\PanoramicData.Extensions.SubPathRedirector.Tests.csproj", "{C720DD10-BA7C-4038-96EA-987DE4D19817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanoramicData.Extensions.SubPathRedirector.Demo", "Demo\PanoramicData.Extensions.SubPathRedirector.Demo.csproj", "{E906CE64-05A7-4457-A44D-2D6D5461B762}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanoramicData.Extensions.SubPathRedirector.Demo", "Demo\PanoramicData.Extensions.SubPathRedirector.Demo.csproj", "{E906CE64-05A7-4457-A44D-2D6D5461B762}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DFAA911D-63E2-4460-960A-D1C0E233F68A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		version.json = version.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

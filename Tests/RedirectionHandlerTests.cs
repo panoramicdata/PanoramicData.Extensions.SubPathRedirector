@@ -6,67 +6,68 @@ namespace PanoramicData.Extensions.SubPathRedirector.Tests;
 
 public class RedirectionHandlerTests
 {
-    [Fact]
-    public void Redirect_NullRedirectionContext_ThrowsArgumentNullException()
-    {
-        var action = () => RedirectionHandler.RedirectRequest(null!);
+	[Fact]
+	public void Redirect_NullRedirectionContext_ThrowsArgumentNullException()
+	{
+		var handler = new RedirectionHandler();
+		var action = () => handler.RedirectRequest(null!);
 
-        action.Should().Throw<ArgumentNullException>();
-    }
+		action.Should().Throw<ArgumentNullException>();
+	}
 
-    [Fact]
-    public void Redirect_NoMatchingSubPathRedirection_ThrowsInvalidOperationException()
-    {
-        var context = FakeRedirectionContextBuilder
-            .CreateBuilder()
-            .ForRequestUrl("/notgoogle/favicon.ico")
-            .Build();
+	[Fact]
+	public void Redirect_NoMatchingSubPathRedirection_ThrowsInvalidOperationException()
+	{
+		var context = FakeRedirectionContextBuilder
+			.CreateBuilder("https://localhost:5000/notgoogle/favicon.ico")
+			.Build();
+		var handler = new RedirectionHandler();
 
-        var action = () => RedirectionHandler.RedirectRequest(context);
+		var action = () => handler.RedirectRequest(context);
 
-        action.Should().Throw<InvalidOperationException>();
-    }
+		action.Should().Throw<InvalidOperationException>();
+	}
 
-    [Fact]
-    public void Redirect_WithSubPathRedirection_Succeeds()
-    {
-        var context = FakeRedirectionContextBuilder
-            .CreateBuilder()
-            .ForRequestUrl("/google/favicon.ico")
-            .WithSubPathRedirectionAtIndex(0)
-            .Build();
+	[Fact]
+	public void Redirect_WithSubPathRedirection_Succeeds()
+	{
+		var context = FakeRedirectionContextBuilder
+			.CreateBuilder("https://localhost:5000/google/favicon.ico")
+			.WithSubPathRedirectionAtIndex(0)
+			.Build();
+		var handler = new RedirectionHandler();
 
-        var action = () => RedirectionHandler.RedirectRequest(context);
+		var action = () => handler.RedirectRequest(context);
 
-        action.Should().NotThrow();
-    }
+		action.Should().NotThrow();
+	}
 
-    [Fact]
-    public void Redirect_ForTemporaryRedirection_SetsResultCode302()
-    {
-        var context = FakeRedirectionContextBuilder
-            .CreateBuilder()
-            .ForRequestUrl("/google/favicon.ico")
-            .WithOptions(FakeSubPathRedirectorOptionsFactory.CreateDefaultTemporaryRedirectOptions())
-            .WithSubPathRedirectionAtIndex(0)
-            .Build();
+	[Fact]
+	public void Redirect_ForTemporaryRedirection_SetsResultCode302()
+	{
+		var context = FakeRedirectionContextBuilder
+			.CreateBuilder("https://localhost:5000/google/favicon.ico")
+			.WithOptions(FakeSubPathRedirectorOptionsFactory.CreateDefaultTemporaryRedirectOptions())
+			.WithSubPathRedirectionAtIndex(0)
+			.Build();
+		var handler = new RedirectionHandler();
 
-        RedirectionHandler.RedirectRequest(context);
+		handler.RedirectRequest(context);
 
-        context.Response.StatusCode.Should().Be(StatusCodes.Status302Found);
-    }
+		context.Response.StatusCode.Should().Be(StatusCodes.Status302Found);
+	}
 
-    [Fact]
-    public void Redirect_ForPermanentRedirection_SetsResultCode301()
-    {
-        var context = FakeRedirectionContextBuilder
-            .CreateBuilder()
-            .ForRequestUrl("/google/favicon.ico")
-            .WithSubPathRedirectionAtIndex(0)
-            .Build();
+	[Fact]
+	public void Redirect_ForPermanentRedirection_SetsResultCode301()
+	{
+		var context = FakeRedirectionContextBuilder
+			.CreateBuilder("https://localhost:5000/google/favicon.ico")
+			.WithSubPathRedirectionAtIndex(0)
+			.Build();
+		var handler = new RedirectionHandler();
 
-        RedirectionHandler.RedirectRequest(context);
+		handler.RedirectRequest(context);
 
-        context.Response.StatusCode.Should().Be(StatusCodes.Status301MovedPermanently);
-    }
+		context.Response.StatusCode.Should().Be(StatusCodes.Status301MovedPermanently);
+	}
 }

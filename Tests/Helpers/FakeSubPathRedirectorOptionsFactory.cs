@@ -2,25 +2,25 @@
 
 internal class FakeSubPathRedirectorOptionsFactory
 {
-    internal static SubPathRedirectorOptions CreateDefaultOptions()
-    {
-        var options = new SubPathRedirectorOptions();
+	internal static SubPathRedirectorOptions CreateDefaultOptions()
+	{
+		var options = new SubPathRedirectorOptions();
 
-        options.SubPathRedirections.Add(
-            new() { RedirectionUrlPrefix = "/google/", RequestUrlPrefix = "https://www.google.com/" }
-            );
+		options.SubPathRedirections.Add(
+			new() { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "https://www.google.com/" }
+			);
 
-        return options;
-    }
+		return options;
+	}
 
-    internal static SubPathRedirectorOptions CreateDefaultTemporaryRedirectOptions()
-    {
-        var options = new SubPathRedirectorOptions();
+	internal static SubPathRedirectorOptions CreateDefaultTemporaryRedirectOptions()
+	{
+		var options = new SubPathRedirectorOptions();
 
-        options.SubPathRedirections.Add(
-            new() { RedirectionUrlPrefix = "/google/", RequestUrlPrefix = "https://www.google.com/", RedirectionType = RedirectionTypes.Temporary }
-            );
+		options.SubPathRedirections.Add(
+			new() { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "https://www.google.com/", RedirectionType = RedirectionTypes.Temporary }
+		);
 
-        return options;
-    }
+		return options;
+	}
 }
