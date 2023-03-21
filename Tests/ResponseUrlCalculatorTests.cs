@@ -52,7 +52,7 @@ public class ResponseUrlCalculatorTests
 	[Fact]
 	public void Calculate_RequestUrlPrefixContainsMixedCaseValue_GeneratesAppropriateUrl()
 	{
-		var config = new SubPathRedirection() { RequestUrlPrefix = "/Google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
+		var config = new SubPathRedirection { RequestUrlPrefix = "/Google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
 		var result = ResponseUrlCalculator.Calculate("/google/favicon.ico", config);
 
 		result.Should().Be("notgoogle/favicon.ico");
@@ -61,7 +61,7 @@ public class ResponseUrlCalculatorTests
 	[Fact]
 	public void Calculate_RequestUrlContainsMixedCaseValue_GeneratesAppropriateUrl()
 	{
-		var config = new SubPathRedirection() { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
+		var config = new SubPathRedirection { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
 		var result = ResponseUrlCalculator.Calculate("/Google/favicon.ico", config);
 
 		result.Should().Be("notgoogle/favicon.ico");

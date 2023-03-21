@@ -18,21 +18,7 @@ public class SubPathRedirectorOptions
 	internal SubPathRedirection? GetRedirection(string loweredRequestPath)
 	{
 		// Do very fast lookups of mappings in a case-insensitive manner by using lowercase Url
-		var host = GetHost(loweredRequestPath);
 		var redirection = SubPathRedirections.FirstOrDefault(m => loweredRequestPath.StartsWith(m.RequestUrlPrefix, StringComparison.Ordinal));
 		return redirection;
-	}
-
-	/// <summary>
-	/// Extract the host name from a request path
-	/// </summary>
-	/// <param name="requestPath">The request path</param>
-	/// <returns>The host name, or the full path if the format is not recognised</returns>
-	private static string GetHost(string requestPath)
-	{
-		var firstSeparatorIndex = requestPath.IndexOf('/');
-		return firstSeparatorIndex < 0
-			? requestPath
-			: requestPath[..firstSeparatorIndex];
 	}
 }
