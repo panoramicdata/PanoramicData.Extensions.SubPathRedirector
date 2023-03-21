@@ -1,6 +1,6 @@
 namespace PanoramicData.Extensions.SubPathRedirector.Demo;
 
-public class Program
+public static class Program
 {
 	public static void Main(string[] args)
 	{

@@ -1,6 +1,6 @@
 ﻿namespace PanoramicData.Extensions.SubPathRedirector.Tests.Helpers;
 
-internal class FakeSubPathRedirectorOptionsFactory
+internal static class FakeSubPathRedirectorOptionsFactory
 {
 	internal static SubPathRedirectorOptions CreateDefaultOptions()
 	{
