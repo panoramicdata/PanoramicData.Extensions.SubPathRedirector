@@ -43,7 +43,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
 		<!-- Allow test projects to see internals -->
 		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
 	</ItemGroup>
+
 </Project>
