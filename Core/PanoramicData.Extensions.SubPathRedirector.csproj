@@ -5,6 +5,29 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<OutputType>Library</OutputType>
+		<IsPackable>true</IsPackable>
+
+		<Authors>Panoramic Data Limited</Authors>
+		<Company>Panoramic Data Limited</Company>
+		<Copyright>Copyright © Panoramic Data Limited 2023</Copyright>
+		<PackageProjectUrl>https://github.com/panoramicdata/PanoramicData.Extensions.SubPathRedirector/</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageTags>SubPath Path Redirector</PackageTags>
+		<Title>PanoramicData.Extensions.SubPathRedirector</Title>
+		<Description>A .NET package for redirecting requests for certain subpaths to other domains</Description>
+		<Summary>A .NET package that supports redirecting a subset of requests to a site to another domain</Summary>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/panoramicdata/PanoramicData.Extensions.SubPathRedirector/</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<!-- Update the following before releasing to nuget -->
+		<PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+
 	</PropertyGroup>
 
 	<ItemGroup>

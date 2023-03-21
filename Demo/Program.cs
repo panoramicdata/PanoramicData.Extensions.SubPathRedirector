@@ -11,10 +11,7 @@ public class Program
 		builder.Services.AddServerSideBlazor();
 
 		builder.Services.AddSubPathRedirection(options =>
-			options.SubPathRedirections = new()
-			{
-				new() { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "https://www.google.com/" }
-			}
+			options.SubPathRedirections.Add(new() { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "https://www.google.com/" })
 		);
 
 		var app = builder.Build();
