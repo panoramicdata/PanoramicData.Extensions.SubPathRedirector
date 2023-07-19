@@ -7,7 +7,7 @@ internal static class ResponseUrlCalculator
 		ArgumentNullException.ThrowIfNull(requestPath);
 		ArgumentNullException.ThrowIfNull(redirection);
 
-		string responseUrl = requestPath[redirection.RequestUrlPrefix.Length..];
+		var responseUrl = requestPath[redirection.RequestUrlPrefix.Length..];
 		responseUrl = CombinePath(redirection.RedirectionUrlPrefix, responseUrl);
 		return responseUrl;
 	}
@@ -16,7 +16,7 @@ internal static class ResponseUrlCalculator
 	{
 		if (!requestUrlPrefix.EndsWith("/", StringComparison.OrdinalIgnoreCase))
 		{
-			requestUrlPrefix = requestUrlPrefix + "/";
+			requestUrlPrefix += "/";
 		}
 
 		if (responseUrl.StartsWith("/", StringComparison.OrdinalIgnoreCase))
