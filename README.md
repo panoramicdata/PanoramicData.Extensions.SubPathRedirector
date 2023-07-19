@@ -73,13 +73,13 @@ app.UseAuthorization();
 app.UseSubPathRedirection();
 ```
 Use the correct code sample to meet your specific requirements.
-> CAUTION: Consider your authentication requirements carefully. Failure to apply the correct rules could result in the exposure 
-> of sensitive information or functionality to unauthenticated users.
+> **Warning** Consider your authentication requirements carefully. Failure to apply the correct rules could result in the 
+> exposure of sensitive information or functionality to unauthenticated users.
 
 ## Configuration loading options
 
 Version 1.1 of the package enhances the options available to you for loading mapping configuration. This is achieved 
-by exposing 3 overloads of the `AddSubPathRedirection` method. Understanding these 4 options is key to making 
+by exposing 3 overloads of the `AddSubPathRedirection` method. Understanding these various options is key to making 
 best use of the package in your specific circumstances.
 
 ### 1. Static configuration in code
@@ -136,6 +136,6 @@ the `ApplyConfiguration` method on the base class to have it swap out its config
 highly optimised, thread-safe way. This affects the design of your provider; you are responsible for wiring up 
 tasks to complete any future loading/reloading operations as part of the work done in the `InitializeAsync` method.
 
-Prior to loading the config, the config is empty, resulting in no static files being served. Therefore, you should 
+Prior to loading the config, the config is empty, resulting in no redirection being performed. Therefore, you should 
 aim to optimise loading of config as much as possible, to reduce to a minimum the period for which there is no config 
 available.
