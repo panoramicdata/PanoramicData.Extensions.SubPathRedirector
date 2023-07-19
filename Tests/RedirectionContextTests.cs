@@ -16,7 +16,6 @@ public class RedirectionContextTests
 
 		var context = new RedirectionContext(httpContext, options);
 
-		context.Should().NotBeNull();
 		context.SubPathRedirection.Should().BeNull();
 	}
 
@@ -31,7 +30,6 @@ public class RedirectionContextTests
 
 		var context = new RedirectionContext(httpContext, options);
 
-		context.Should().NotBeNull();
 		context.SubPathRedirection.Should().NotBeNull();
 		context.SubPathRedirection!.RedirectionUrlPrefix.Should().Be("https://www.google.com/");
 	}
@@ -47,7 +45,6 @@ public class RedirectionContextTests
 
 		var context = new RedirectionContext(httpContext, options);
 
-		context.Should().NotBeNull();
 		context.SubPathRedirection.Should().NotBeNull();
 		context.SubPathRedirection!.RedirectionUrlPrefix.Should().Be("https://www.google.com/");
 	}
@@ -63,7 +60,6 @@ public class RedirectionContextTests
 
 		var context = new RedirectionContext(httpContext, options);
 
-		context.Should().NotBeNull();
 		context.SubPathRedirection.Should().NotBeNull();
 		context.SubPathRedirection!.RedirectionUrlPrefix.Should().Be("https://www.google.com/");
 	}
