@@ -28,4 +28,8 @@
 		<ProjectReference Include="..\Core\PanoramicData.Extensions.SubPathRedirector.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Fakes\" />
+	</ItemGroup>
+
 </Project>

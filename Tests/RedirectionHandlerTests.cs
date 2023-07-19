@@ -18,7 +18,7 @@ public class RedirectionHandlerTests
 	[Fact]
 	public void Redirect_NoMatchingSubPathRedirection_ThrowsInvalidOperationException()
 	{
-		var context = FakeRedirectionContextBuilder
+		var context = RedirectionContextBuilder
 			.CreateBuilder("https://localhost:5000/notgoogle/favicon.ico")
 			.Build();
 		var handler = new RedirectionHandler();
@@ -31,7 +31,7 @@ public class RedirectionHandlerTests
 	[Fact]
 	public void Redirect_WithSubPathRedirection_Succeeds()
 	{
-		var context = FakeRedirectionContextBuilder
+		var context = RedirectionContextBuilder
 			.CreateBuilder("https://localhost:5000/google/favicon.ico")
 			.WithSubPathRedirectionAtIndex(0)
 			.Build();
@@ -45,9 +45,9 @@ public class RedirectionHandlerTests
 	[Fact]
 	public void Redirect_ForTemporaryRedirection_SetsResultCode302()
 	{
-		var context = FakeRedirectionContextBuilder
+		var context = RedirectionContextBuilder
 			.CreateBuilder("https://localhost:5000/google/favicon.ico")
-			.WithOptions(FakeSubPathRedirectorOptionsFactory.CreateDefaultAbsolutePathOptions(RedirectionTypes.Temporary))
+			.WithConfiguration(FakeSubPathRedirectorConfigurationFactory.CreateDefaultAbsolutePathConfiguration(RedirectionTypes.Temporary))
 			.WithSubPathRedirectionAtIndex(0)
 			.Build();
 		var handler = new RedirectionHandler();
@@ -60,7 +60,7 @@ public class RedirectionHandlerTests
 	[Fact]
 	public void Redirect_ForPermanentRedirection_SetsResultCode301()
 	{
-		var context = FakeRedirectionContextBuilder
+		var context = RedirectionContextBuilder
 			.CreateBuilder("https://localhost:5000/google/favicon.ico")
 			.WithSubPathRedirectionAtIndex(0)
 			.Build();

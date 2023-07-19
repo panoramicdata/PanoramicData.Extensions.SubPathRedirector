@@ -13,7 +13,7 @@ public class CaseInsensitiveFullPathContextFactoryTests
 			.CreateBuilder("https://localhost:5000/images/favicon.ico")
 			.Build();
 
-		var options = FakeSubPathRedirectorOptionsFactory.CreateDefaultFullPathOptions();
+		var options = FakeSubPathRedirectorConfigurationFactory.CreateDefaultFullPathConfiguration();
 
 		var sut = new CaseInsensitiveFullPathContextFactory();
 		var requestContext = sut.CreateRedirectionContext(httpContext, options);
@@ -28,7 +28,7 @@ public class CaseInsensitiveFullPathContextFactoryTests
 			.CreateBuilder("https://localhost:5000/google/favicon.ico")
 			.Build();
 
-		var options = FakeSubPathRedirectorOptionsFactory.CreateDefaultFullPathOptions();
+		var options = FakeSubPathRedirectorConfigurationFactory.CreateDefaultFullPathConfiguration();
 
 		var sut = new CaseInsensitiveFullPathContextFactory();
 		var requestContext = sut.CreateRedirectionContext(httpContext, options);
@@ -44,7 +44,7 @@ public class CaseInsensitiveFullPathContextFactoryTests
 			.CreateBuilder("https://localhost:5000/GoOgLe/Favicon.ico")
 			.Build();
 
-		var options = FakeSubPathRedirectorOptionsFactory.CreateDefaultFullPathOptions();
+		var options = FakeSubPathRedirectorConfigurationFactory.CreateDefaultFullPathConfiguration();
 
 		var sut = new CaseInsensitiveFullPathContextFactory();
 		var requestContext = sut.CreateRedirectionContext(httpContext, options);
@@ -60,7 +60,7 @@ public class CaseInsensitiveFullPathContextFactoryTests
 			.CreateBuilder("https://LocalHost:5000/google/favicon.ico")
 			.Build();
 
-		var options = FakeSubPathRedirectorOptionsFactory.CreateDefaultFullPathOptions();
+		var options = FakeSubPathRedirectorConfigurationFactory.CreateDefaultFullPathConfiguration();
 
 		var sut = new CaseInsensitiveFullPathContextFactory();
 		var requestContext = sut.CreateRedirectionContext(httpContext, options);

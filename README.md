@@ -32,6 +32,9 @@ builder.Services.AddSubPathRedirection(options =>
 Here we make use of the AddSubPathRedirection extension method to add the necessary services, as well as defining the action that is 
 used to apply modifications to the options on which the redirection of requests is based.
 
+Version 1.1 of the package introduces the ability to load configuration asynchronously from a data store, so there are now 3 overloads 
+of the `AddSubPathRedirection` method. The options for loading configuration are detailed towards the end of this document.
+
 ### Step 2 - add the middleware to the pipeline
 Next, we must include the middleware in the pipeline in the correct place.
 ```
@@ -72,3 +75,67 @@ app.UseSubPathRedirection();
 Use the correct code sample to meet your specific requirements.
 > CAUTION: Consider your authentication requirements carefully. Failure to apply the correct rules could result in the exposure 
 > of sensitive information or functionality to unauthenticated users.
+
+## Configuration loading options
+
+Version 1.1 of the package enhances the options available to you for loading mapping configuration. This is achieved 
+by exposing 3 overloads of the `AddSubPathRedirection` method. Understanding these 4 options is key to making 
+best use of the package in your specific circumstances.
+
+### 1. Static configuration in code
+
+The first overload of the `AddSubPathRedirection` method takes static, hard-coded configuration, and is the 
+simplest to use. This is the method shown in the first section, and used in the demo.
+
+### 2. Async loading of configuration from a data store (no refreshes)
+
+The second overload of the `AddSubPathRedirection` method takes as its parameter a 
+`Func<IServiceScopeFactory, Task<DomainSpecificStaticFileOptions>>` which is the code to be called to load configuration 
+once the system has started. The loading method is asynchronous to support accessing the config from a slow, external 
+data store, and is delayed until application startup has completed to ensure that your data store has finished 
+initializing.
+
+Prior to loading the config, the config is empty, resulting in no static files being served. Therefore, you should 
+aim to optimise loading of config as much as possible, to reduce to a minimum the period for which there is no 
+config available.
+
+### 3. Customised async loading (optionally with refreshes/reloading) by specifying the provider type
+
+The third overload of the `AddSubPathRedirection` method takes a type parameter to specify a custom class 
+inheriting from `RedirectorConfigurationProviderBase` that will be used to load redirector configuration. This class 
+offers asynchronous startup and loading of the configuration system, enabling lots of flexibility, including the 
+ability to reload configuration during the application's lifetime. The implementation of the `InitializeAsync` method 
+that the implementing class is required to override is called to load the configuration once the system has started. 
+The loading method is asynchronous to support accessing the config from a slow, external data store, and is delayed 
+until startup has completed to ensure that your data store initialization will have completed.
+
+One public implementation of `RedirectorConfigurationProviderBase` is provided, namely 
+`RefreshingRedirectorConfigurationProvider`. This class can be used to call your asynchronous loading code to a 
+predetermined schedule, with the refresh period specified as a parameter of the constructor. Using this as a base 
+class for your custom loading logic will make regular refreshes simpler.
+
+Providing a custom type inheriting from `RedirectorConfigurationProviderBase` enables you to implement a 
+custom caching scheme making use of cache invalidation to reload configuration as quickly as possible after a change 
+is detected, if you consider this useful. It can also offer the ability to inject dependencies into your code to
+access the data store, as necessary. Note that the provider is registered as a singleton service, so if you need 
+access to any scoped or transient services then you should accept an instance of IServiceScopeFactory and create a 
+scope during your configuration loading operations rather than capturing a service with a lower scope directly,
+as those captured services would never be disposed; furthermore bugs may be encountered in those services. An 
+instance of IServiceScopeFactory is supplied to the InitializeAsync method to enable (and encourage) dependency 
+resolution in the correct way, so generally you are unlikely to need to accept many dependencies through the
+constructor.
+
+Custom implementations should call the `ApplyConfiguration` method on the base class to apply the new configuration 
+to the underlying subsystem each time it has been loaded - but only do so once the configuration is complete.
+
+Developers should note that their code is not directly called by the subsystem to retrieve configuration on each 
+request. The middleware in this package sits on a very hot path in the request pipeline, and it is therefore 
+inappropriate to allow developers to run a lot of code during the request. Instead, `RedirectorConfigurationProviderBase` 
+is responsible for delivering the configuration on request, and developers of custom providers are required to call 
+the `ApplyConfiguration` method on the base class to have it swap out its configuration with an updated set in a 
+highly optimised, thread-safe way. This affects the design of your provider; you are responsible for wiring up 
+tasks to complete any future loading/reloading operations as part of the work done in the `InitializeAsync` method.
+
+Prior to loading the config, the config is empty, resulting in no static files being served. Therefore, you should 
+aim to optimise loading of config as much as possible, to reduce to a minimum the period for which there is no config 
+available.

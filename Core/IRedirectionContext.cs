@@ -25,11 +25,6 @@ internal interface IRedirectionContext
 	HttpResponse Response { get; }
 
 	/// <summary>
-	/// The options with which redirection is to be performefd
-	/// </summary>
-	SubPathRedirectorOptions Options { get; }
-
-	/// <summary>
 	/// The relative path of the current request
 	/// </summary>
 	string RequestPath { get; set; }

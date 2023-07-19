@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 using PanoramicData.Extensions.SubPathRedirector;
+using PanoramicData.Extensions.SubPathRedirector.Providers.ConfigurationProviders;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -14,5 +16,15 @@ public static class ApplicationBuilderExtensions
 	/// <param name="app">The instance of the interface that we are extending</param>
 	/// <returns>The instance that was extended, to support method chaining</returns>
 	public static IApplicationBuilder UseSubPathRedirection(this IApplicationBuilder app)
-		=> app.UseMiddleware<RedirectorMiddleware>();
+	{
+		app.UseMiddleware<RedirectorMiddleware>();
+
+		// Wire up starting async initialization of the configuration provider once the application has finished starting
+		var hostLifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+		var configurationProvider = app.ApplicationServices.GetRequiredService<RedirectorConfigurationProviderInitializer>();
+		var token = hostLifetime.ApplicationStarted;
+		token.Register(configurationProvider.StartInitialization);
+
+		return app;
+	}
 }

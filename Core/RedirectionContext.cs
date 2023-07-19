@@ -26,6 +26,4 @@ public class RedirectionContext : IRedirectionContext
 	public bool CanRedirectRequest => SubPathRedirection is not null;
 
 	public SubPathRedirection? SubPathRedirection { get; init; }
-
-	public required SubPathRedirectorOptions Options { get; init; }
 }

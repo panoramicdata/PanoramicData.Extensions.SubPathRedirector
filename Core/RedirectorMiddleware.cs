@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
+using PanoramicData.Extensions.SubPathRedirector.Interfaces;
 
 namespace PanoramicData.Extensions.SubPathRedirector;
 
@@ -8,20 +8,21 @@ namespace PanoramicData.Extensions.SubPathRedirector;
 /// </summary>
 internal class RedirectorMiddleware : IMiddleware
 {
-	private readonly SubPathRedirectorOptions _options;
+	private readonly IRedirectorConfigurationProvider _configurationProvider;
 	private readonly IRedirectionHandler _redirectionHandler;
 	private readonly IRedirectionContextFactory _redirectionContextFactory;
 
-	public RedirectorMiddleware(IRedirectionHandler handler, IRedirectionContextFactory redirectionContextFactory, IOptions<SubPathRedirectorOptions> options)
+	public RedirectorMiddleware(IRedirectionHandler handler, IRedirectionContextFactory redirectionContextFactory, IRedirectorConfigurationProvider configurationProvider)
 	{
-		_options = options.Value;
 		_redirectionHandler = handler;
 		_redirectionContextFactory = redirectionContextFactory;
+		_configurationProvider = configurationProvider;
 	}
 
 	public Task InvokeAsync(HttpContext context, RequestDelegate next)
 	{
-		var redirectionContext = _redirectionContextFactory.CreateRedirectionContext(context, _options);
+		var configuration = _configurationProvider.GetConfiguration();
+		var redirectionContext = _redirectionContextFactory.CreateRedirectionContext(context, configuration);
 		if (redirectionContext.CanRedirectRequest)
 		{
 			_redirectionHandler.RedirectRequest(redirectionContext);

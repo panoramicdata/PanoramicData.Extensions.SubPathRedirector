@@ -15,15 +15,15 @@ public class CaseInsensitiveFullPathContextFactory : IRedirectionContextFactory
 	/// based upon a case-insensitive matching of the incoming request on its full path
 	/// </summary>
 	/// <param name="httpContext">The HttpContext of the incoming request</param>
-	/// <param name="options">The configuration of the subsystem on which to base the behaviour</param>
+	/// <param name="configuration">The configuration of the subsystem on which to base the behaviour</param>
 	/// <returns>A RedirectionContext suitably configured for the current request</returns>
-	public RedirectionContext CreateRedirectionContext(HttpContext httpContext, SubPathRedirectorOptions options)
+	public RedirectionContext CreateRedirectionContext(HttpContext httpContext, SubPathRedirectorConfiguration configuration)
 	{
 		var requestPath = GetFullPath(httpContext.Request);
 		var modifiedRequestPath = requestPath.ToLowerInvariant();
 
 		var responseUrl = string.Empty;
-		var redirection = GetRedirection(modifiedRequestPath, options);
+		var redirection = GetRedirection(modifiedRequestPath, configuration);
 		if (redirection is not null)
 		{
 			responseUrl = CaseInsensitiveResponseUrlCalculator.Calculate(requestPath, redirection);
@@ -32,7 +32,6 @@ public class CaseInsensitiveFullPathContextFactory : IRedirectionContextFactory
 		return new RedirectionContext
 		{
 			HttpContext = httpContext,
-			Options = options,
 			RequestPath = requestPath,
 			ModifiedRequestPath = modifiedRequestPath,
 			SubPathRedirection = redirection,
@@ -41,13 +40,13 @@ public class CaseInsensitiveFullPathContextFactory : IRedirectionContextFactory
 	}
 
 	/// <summary>
-	/// Get the redirection associated with the requested path, or null if no mapping exists
+	/// Get the redirection associated with the requested path, or null if no redirection exists
 	/// </summary>
-	/// <param name="loweredRequestPath">The lowercase path of the request whose mapping we are trying to find</param>
+	/// <param name="loweredRequestPath">The lowercase path of the request whose redirection we are trying to find</param>
 	/// <returns>The redirection configuration that is to be used in interception, or null if no interception is appropriate</returns>
-	private static SubPathRedirection? GetRedirection(string loweredRequestPath, SubPathRedirectorOptions options) =>
-		// Do very fast lookups of mappings in a case-insensitive manner by using lowercase Url
-		options.SubPathRedirections.FirstOrDefault(m => loweredRequestPath.StartsWith(m.RequestUrlPrefix, StringComparison.Ordinal));
+	private static SubPathRedirection? GetRedirection(string loweredRequestPath, SubPathRedirectorConfiguration config) =>
+		// Do very fast lookups of redirections in a case-insensitive manner by using lowercase Url
+		config.SubPathRedirections.FirstOrDefault(m => loweredRequestPath.StartsWith(m.RequestUrlPrefix, StringComparison.Ordinal));
 
 	private static string GetFullPath(HttpRequest httpRequest)
 		=> UriHelper.BuildAbsolute(httpRequest.Scheme, httpRequest.Host, httpRequest.PathBase, httpRequest.Path);
