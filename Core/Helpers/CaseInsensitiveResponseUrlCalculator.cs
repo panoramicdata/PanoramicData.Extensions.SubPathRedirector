@@ -1,6 +1,9 @@
-﻿namespace PanoramicData.Extensions.SubPathRedirector;
+﻿namespace PanoramicData.Extensions.SubPathRedirector.Helpers;
 
-internal static class ResponseUrlCalculator
+/// <summary>
+/// Case-insensitive response URL calculator
+/// </summary>
+internal static class CaseInsensitiveResponseUrlCalculator
 {
 	internal static string Calculate(string requestPath, SubPathRedirection redirection)
 	{

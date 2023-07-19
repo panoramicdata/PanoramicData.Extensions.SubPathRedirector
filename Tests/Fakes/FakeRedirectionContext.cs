@@ -16,7 +16,7 @@ internal class FakeRedirectionContext : IRedirectionContext
 
     public required string RequestPath { get; set; }
 
-    public required string LoweredRequestPath { get; set; }
+    public required string ModifiedRequestPath { get; set; }
 
     public string? ResponseUrl { get; set; }
 

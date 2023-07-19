@@ -37,7 +37,7 @@ internal interface IRedirectionContext
 	/// <summary>
 	/// A lowercase version of the path of the current request
 	/// </summary>
-	string LoweredRequestPath { get; set; }
+	string ModifiedRequestPath { get; set; }
 
 	/// <summary>
 	/// The Url to which to redirect, if redirection is supported

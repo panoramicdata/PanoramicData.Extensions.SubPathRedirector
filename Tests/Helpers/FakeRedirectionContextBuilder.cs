@@ -6,7 +6,7 @@ namespace PanoramicData.Extensions.SubPathRedirector.Tests.Helpers;
 internal class FakeRedirectionContextBuilder
 {
 	private readonly Uri _requestUri;
-	private SubPathRedirectorOptions _options = FakeSubPathRedirectorOptionsFactory.CreateDefaultOptions();
+	private SubPathRedirectorOptions _options = FakeSubPathRedirectorOptionsFactory.CreateDefaultAbsolutePathOptions();
 	private int _redirectionIndex = int.MinValue;
 	private HttpContext? _httpContext;
 
@@ -51,7 +51,7 @@ internal class FakeRedirectionContextBuilder
 		{
 			HttpContext = _httpContext,
 			RequestPath = _requestUri.AbsolutePath,
-			LoweredRequestPath = _requestUri.AbsolutePath.ToLowerInvariant()!,
+			ModifiedRequestPath = _requestUri.AbsolutePath.ToLowerInvariant()!,
 			Options = _options,
 			SubPathRedirection = redirection
 		};

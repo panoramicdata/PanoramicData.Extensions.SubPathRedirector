@@ -1,4 +1,6 @@
-﻿namespace PanoramicData.Extensions.SubPathRedirector;
+﻿using PanoramicData.Extensions.SubPathRedirector.ContextFactories;
+
+namespace PanoramicData.Extensions.SubPathRedirector;
 
 /// <summary>
 /// Options for the configuration of sub-path redirection
@@ -11,14 +13,14 @@ public class SubPathRedirectorOptions
 	public List<SubPathRedirection> SubPathRedirections { get; set; } = new();
 
 	/// <summary>
-	/// Get the redirection associated with the requested path, or null if no mapping exists
+	/// The type of redirection context factory to use in handling requests
 	/// </summary>
-	/// <param name="loweredRequestPath">The lowercase path of the request whose mapping we are trying to find</param>
-	/// <returns>The redirection configuration that is to be used in interception, or null if no interception is appropriate</returns>
-	internal SubPathRedirection? GetRedirection(string loweredRequestPath)
-	{
-		// Do very fast lookups of mappings in a case-insensitive manner by using lowercase Url
-		var redirection = SubPathRedirections.FirstOrDefault(m => loweredRequestPath.StartsWith(m.RequestUrlPrefix, StringComparison.Ordinal));
-		return redirection;
-	}
+	internal Type RedirectionContextFactoryType { get; private set; } = typeof(CaseInsensitiveAbsolutePathContextFactory);
+
+	/// <summary>
+	/// Set the redirection context factory type for use in handling requests
+	/// </summary>
+	/// <typeparam name="TRedirectionContextFactory">The type of redirection context factory to be used</typeparam>
+	public void UseRedirectionContextFactoryType<TRedirectionContextFactory>() where TRedirectionContextFactory : class, IRedirectionContextFactory
+		=> RedirectionContextFactoryType = typeof(TRedirectionContextFactory);
 }

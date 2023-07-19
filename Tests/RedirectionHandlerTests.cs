@@ -47,7 +47,7 @@ public class RedirectionHandlerTests
 	{
 		var context = FakeRedirectionContextBuilder
 			.CreateBuilder("https://localhost:5000/google/favicon.ico")
-			.WithOptions(FakeSubPathRedirectorOptionsFactory.CreateDefaultTemporaryRedirectOptions())
+			.WithOptions(FakeSubPathRedirectorOptionsFactory.CreateDefaultAbsolutePathOptions(RedirectionTypes.Temporary))
 			.WithSubPathRedirectionAtIndex(0)
 			.Build();
 		var handler = new RedirectionHandler();

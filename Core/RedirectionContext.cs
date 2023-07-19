@@ -1,51 +1,31 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace PanoramicData.Extensions.SubPathRedirector;
 
 /// <summary>
 /// Context for a redirection
 /// </summary>
-internal class RedirectionContext : IRedirectionContext
+public class RedirectionContext : IRedirectionContext
 {
-	public RedirectionContext(HttpContext context, SubPathRedirectorOptions options)
+	internal RedirectionContext()
 	{
-		HttpContext = context;
-		Options = options;
-		RequestPath = GetRequestPath(context);
-		LoweredRequestPath = RequestPath.ToLowerInvariant();
-		SubPathRedirection = GetRedirection(LoweredRequestPath, options);
-		if (SubPathRedirection is not null)
-		{
-			ResponseUrl = ResponseUrlCalculator.Calculate(RequestPath, SubPathRedirection);
-		}
 	}
 
-	public HttpContext HttpContext { get; }
+	public required HttpContext HttpContext { get; init; }
 
 	public HttpRequest Request => HttpContext.Request;
 
 	public HttpResponse Response => HttpContext.Response;
 
-	public string RequestPath { get; set; }
+	public required string RequestPath { get; set; }
 
-	public string LoweredRequestPath { get; set; }
+	public required string ModifiedRequestPath { get; set; }
 
-	public string? ResponseUrl { get; }
+	public required string ResponseUrl { get; init; }
 
 	public bool CanRedirectRequest => SubPathRedirection is not null;
 
-	public SubPathRedirection? SubPathRedirection { get; }
+	public SubPathRedirection? SubPathRedirection { get; init; }
 
-	public SubPathRedirectorOptions Options { get; }
-
-	private static string GetRequestPath(HttpContext context)
-	{
-		var requestUrl = context.Request.GetEncodedUrl();
-		var requestUri = new Uri(requestUrl);
-		return requestUri.AbsolutePath;
-	}
-
-	private static SubPathRedirection? GetRedirection(string loweredRequestPath, SubPathRedirectorOptions options)
-		=> options.GetRedirection(loweredRequestPath);
+	public required SubPathRedirectorOptions Options { get; init; }
 }

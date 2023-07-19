@@ -2,7 +2,7 @@
 
 internal static class FakeSubPathRedirectorOptionsFactory
 {
-	internal static SubPathRedirectorOptions CreateDefaultOptions()
+	internal static SubPathRedirectorOptions CreateDefaultAbsolutePathOptions()
 	{
 		var options = new SubPathRedirectorOptions();
 
@@ -13,12 +13,34 @@ internal static class FakeSubPathRedirectorOptionsFactory
 		return options;
 	}
 
-	internal static SubPathRedirectorOptions CreateDefaultTemporaryRedirectOptions()
+	internal static SubPathRedirectorOptions CreateDefaultAbsolutePathOptions(RedirectionTypes redirectionType)
 	{
 		var options = new SubPathRedirectorOptions();
 
 		options.SubPathRedirections.Add(
-			new() { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "https://www.google.com/", RedirectionType = RedirectionTypes.Temporary }
+			new() { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "https://www.google.com/", RedirectionType = redirectionType }
+		);
+
+		return options;
+	}
+
+	internal static SubPathRedirectorOptions CreateDefaultFullPathOptions()
+	{
+		var options = new SubPathRedirectorOptions();
+
+		options.SubPathRedirections.Add(
+			new() { RequestUrlPrefix = "https://localhost:5000/google/", RedirectionUrlPrefix = "https://www.google.com/" }
+			);
+
+		return options;
+	}
+
+	internal static SubPathRedirectorOptions CreateDefaultFullPathOptions(RedirectionTypes redirectionType)
+	{
+		var options = new SubPathRedirectorOptions();
+
+		options.SubPathRedirections.Add(
+			new() { RequestUrlPrefix = "https://localhost:5000/google/", RedirectionUrlPrefix = "https://www.google.com/", RedirectionType = redirectionType }
 		);
 
 		return options;
