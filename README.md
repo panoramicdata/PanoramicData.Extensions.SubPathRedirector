@@ -90,7 +90,7 @@ simplest to use. This is the method shown in the first section, and used in the 
 ### 2. Async loading of configuration from a data store (no refreshes)
 
 The second overload of the `AddSubPathRedirection` method takes as its parameter a 
-`Func<IServiceScopeFactory, Task<DomainSpecificStaticFileOptions>>` which is the code to be called to load configuration 
+`Func<IServiceScopeFactory, Task<SubPathRedirectorConfiguration>>` which is the code to be called to load configuration 
 once the system has started. The loading method is asynchronous to support accessing the config from a slow, external 
 data store, and is delayed until application startup has completed to ensure that your data store has finished 
 initializing.
