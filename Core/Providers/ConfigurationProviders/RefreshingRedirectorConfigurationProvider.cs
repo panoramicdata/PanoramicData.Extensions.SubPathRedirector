@@ -71,10 +71,12 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 		_scopeFactory = scopeFactory;
 		_lifetimeCancellationToken = _hostApplicationLifetime.ApplicationStopping;
 
+		var initializationSucceeded = false;
 		var startTimestamp = Stopwatch.GetTimestamp();
 		try
 		{
 			_ = await RetrieveAsync(_scopeFactory, _lifetimeCancellationToken);
+			initializationSucceeded = true;
 		}
 		catch (TaskCanceledException)
 		{
@@ -90,7 +92,7 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 
 		// Start the process of performing regular refreshes
 		var timeTaken = Stopwatch.GetElapsedTime(startTimestamp);
-		_ = RunRefreshAsync(timeTaken);
+		_ = RunRefreshAsync(timeTaken, initializationSucceeded);
 	}
 
 	/// <summary>
@@ -120,7 +122,7 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 	/// to the required schedule, until the host initiates shutdown
 	/// </summary>
 	/// <param name="timeTaken">The time taken to perform the initialization task</param>
-	private async Task RunRefreshAsync(TimeSpan timeTaken)
+	private async Task RunRefreshAsync(TimeSpan timeTaken, bool operationSucceeded)
 	{
 		if (_scopeFactory is null)
 		{
@@ -128,7 +130,6 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 			return;
 		}
 
-		var operationSucceeded = true;
 		while (!_lifetimeCancellationToken.IsCancellationRequested)
 		{
 			try

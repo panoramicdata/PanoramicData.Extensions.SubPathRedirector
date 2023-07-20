@@ -78,7 +78,7 @@ public abstract class RedirectorConfigurationProviderBase : IRedirectorConfigura
 	/// Handle logging of an exception, if logging has been enabled
 	/// </summary>
 	/// <param name="ex">The exception that is to be logged</param>
-	/// <param name="scopeFactory">The service scope factory from which the </param>
+	/// <param name="scopeFactory">The service scope factory from which we can create scopes for accessing DI</param>
 	protected void LogException(Exception ex)
 	{
 		if (_scopeFactory is null)
@@ -86,9 +86,16 @@ public abstract class RedirectorConfigurationProviderBase : IRedirectorConfigura
 			return;
 		}
 
-		using var scope = _scopeFactory.CreateScope();
-		var logger = scope.ServiceProvider.GetService<ILogger<RedirectorConfigurationProviderBase>>();
-		logger?.LogError(ex, "Exception during configuration retrieval. Message: {Message}", ex.Message);
+		try
+		{
+			using var scope = _scopeFactory.CreateScope();
+			var logger = scope.ServiceProvider.GetService<ILogger<RedirectorConfigurationProviderBase>>();
+			logger?.LogError(ex, "Exception during configuration retrieval. Message: {Message}", ex.Message);
+		}
+		catch (Exception)
+		{
+			// Not much we can do about a logging failure, other than avoid it being rethrown
+		}
 	}
 
 	public void Dispose()
