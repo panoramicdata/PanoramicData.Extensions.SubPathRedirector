@@ -26,8 +26,7 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
 		<!-- Update the following before releasing to nuget -->
-		<PackageReleaseNotes>Added the ability to specify a redirection context factory, to support different path matching algorithms.
-		This version also offers async loading of config, to enable loading of redirection config from a data store.</PackageReleaseNotes>
+		<PackageReleaseNotes>Added control over the period between retrieval retries in the refreshing provider, should retrieval fail.</PackageReleaseNotes>
 
 	</PropertyGroup>
 

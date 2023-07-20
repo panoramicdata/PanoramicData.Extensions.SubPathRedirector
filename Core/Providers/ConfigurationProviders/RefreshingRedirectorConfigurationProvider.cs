@@ -12,19 +12,54 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 {
 	private readonly Func<IServiceScopeFactory, CancellationToken, Task<SubPathRedirectorConfiguration>> _retrievalTask;
 	private readonly TimeSpan _refreshInterval;
+	private readonly TimeSpan _retryInterval;
 	private readonly IHostApplicationLifetime _hostApplicationLifetime;
 	private IServiceScopeFactory? _scopeFactory;
 	private CancellationToken _lifetimeCancellationToken = new CancellationTokenSource().Token;
 
-	public RefreshingRedirectorConfigurationProvider(Func<IServiceScopeFactory, CancellationToken, Task<SubPathRedirectorConfiguration>> retrievalTask, TimeSpan refreshInterval, IHostApplicationLifetime hostApplicationLifetime)
+	/// <summary>
+	/// A simpler constructor for the refreshing provider
+	/// </summary>
+	/// <param name="retrievalTask">The task to be used to retrieve the configuration</param>
+	/// <param name="refreshInterval">The interval we wish to have between retrieval operations</param>
+	/// <param name="hostApplicationLifetime">The host application lifetime, from which our own lifetime is determined</param>
+	/// <exception cref="ArgumentOutOfRangeException">The refresh or retry intervals are shorter than are permitted</exception>
+	/// <remarks>Use of this constructor results in a retry interval of 30 seconds, used when the retrieval fails</remarks>
+	public RefreshingRedirectorConfigurationProvider(
+		Func<IServiceScopeFactory, CancellationToken, Task<SubPathRedirectorConfiguration>> retrievalTask,
+		TimeSpan refreshInterval,
+		IHostApplicationLifetime hostApplicationLifetime) : this(retrievalTask, refreshInterval, TimeSpan.FromSeconds(30), hostApplicationLifetime)
+	{
+		// All work is delegated to the main constructor
+	}
+
+	/// <summary>
+	/// The main constructor for the refreshing provider
+	/// </summary>
+	/// <param name="retrievalTask">The task to be used to retrieve the configuration</param>
+	/// <param name="refreshInterval">The interval we wish to have between retrieval operations</param>
+	/// <param name="retryInterval">The interval between retrievals when the retrieval operation fails</param>
+	/// <param name="hostApplicationLifetime">The host application lifetime, from which our own lifetime is determined</param>
+	/// <exception cref="ArgumentOutOfRangeException">The refresh or retry intervals are shorter than are permitted</exception>
+	public RefreshingRedirectorConfigurationProvider(
+		Func<IServiceScopeFactory, CancellationToken, Task<SubPathRedirectorConfiguration>> retrievalTask,
+		TimeSpan refreshInterval,
+		TimeSpan retryInterval,
+		IHostApplicationLifetime hostApplicationLifetime)
 	{
 		_retrievalTask = retrievalTask;
 		_refreshInterval = refreshInterval;
+		_retryInterval = retryInterval;
 		_hostApplicationLifetime = hostApplicationLifetime;
 
-		if (refreshInterval < TimeSpan.FromMinutes(1))
+		if (refreshInterval < TimeSpan.FromSeconds(15))
 		{
-			throw new ArgumentOutOfRangeException(nameof(refreshInterval), "Refreshing more frequently than every minute is not supported!");
+			throw new ArgumentOutOfRangeException(nameof(refreshInterval), "Refreshing more frequently than every 15 seconds is not supported!");
+		}
+
+		if (retryInterval < TimeSpan.FromSeconds(5))
+		{
+			throw new ArgumentOutOfRangeException(nameof(refreshInterval), "Retrying failed retrievals more frequently than every 5 seconds is not supported!");
 		}
 	}
 
@@ -58,6 +93,12 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 		_ = RunRefreshAsync(timeTaken);
 	}
 
+	/// <summary>
+	/// The retrieval operation, which performs retrieval of the data and applies it to the base
+	/// </summary>
+	/// <param name="scopeFactory">The service scope factory that can be used to gain access to DI</param>
+	/// <param name="cancellationToken">The token used to manage cancellation</param>
+	/// <returns>The time taken to perform the retrieval operation</returns>
 	private async Task<TimeSpan> RetrieveAsync(IServiceScopeFactory scopeFactory, CancellationToken cancellationToken)
 	{
 		if (_scopeFactory is null)
@@ -74,6 +115,11 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 		return Stopwatch.GetElapsedTime(startTimestamp);
 	}
 
+	/// <summary>
+	/// The refresh loop, which manages the running of the retrieval process
+	/// to the required schedule, until the host initiates shutdown
+	/// </summary>
+	/// <param name="timeTaken">The time taken to perform the initialization task</param>
 	private async Task RunRefreshAsync(TimeSpan timeTaken)
 	{
 		if (_scopeFactory is null)
@@ -82,12 +128,14 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 			return;
 		}
 
+		var operationSucceeded = true;
 		while (!_lifetimeCancellationToken.IsCancellationRequested)
 		{
 			try
 			{
-				await DelayUntilNextRefreshAsync(timeTaken, _lifetimeCancellationToken);
+				await DelayUntilNextRefreshAsync(timeTaken, operationSucceeded, _lifetimeCancellationToken);
 				timeTaken = await RetrieveAsync(_scopeFactory, _lifetimeCancellationToken);
+				operationSucceeded = true;
 			}
 			catch (TaskCanceledException)
 			{
@@ -96,16 +144,23 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 			catch (Exception ex)
 			{
 				LogException(ex);
+				operationSucceeded = false;
 			}
 		}
 	}
 
-	private async Task DelayUntilNextRefreshAsync(TimeSpan timeTaken, CancellationToken cancellationToken)
+	/// <summary>
+	/// Pause the task's execution until the next refresh is required
+	/// </summary>
+	/// <param name="timeTaken">The time taken to perform the last operation</param>
+	/// <param name="operationSucceeded">Whether the last attempt succeeded</param>
+	/// <param name="cancellationToken">The token used to manage cancellation</param>
+	private async Task DelayUntilNextRefreshAsync(TimeSpan timeTaken, bool operationSucceeded, CancellationToken cancellationToken)
 	{
-		var delayPeriod = _refreshInterval;
-		if (timeTaken < _refreshInterval)
+		var delayPeriod = operationSucceeded ? _refreshInterval : _retryInterval;
+		if (timeTaken < delayPeriod)
 		{
-			delayPeriod = _refreshInterval - timeTaken;
+			delayPeriod -= timeTaken;
 		}
 
 		try
