@@ -13,7 +13,7 @@
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="7.0.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.10.0" />
     <PackageVersion Include="Nerdbank.GitVersioning" Version="3.10.85" />
     <PackageVersion Include="SecurityCodeScan.VS2019" Version="5.6.7" />
