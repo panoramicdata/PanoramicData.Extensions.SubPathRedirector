@@ -1,3 +1,9 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![NuGet version](https://img.shields.io/nuget/v/PanoramicData.Extensions.SubPathRedirector.svg)](https://www.nuget.org/packages/PanoramicData.Extensions.SubPathRedirector/)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/grade/PanoramicData.Extensions.SubPathRedirector)](https://app.codacy.com/gh/panoramicdata/PanoramicData.Extensions.SubPathRedirector/dashboard)
+
 # PanoramicData.Extensions.SubPathRedirector
 ASP.NET Core middleware for redirecting the requests of a subpath to another application; can be useful for handling cross-application requests 
 in development.
