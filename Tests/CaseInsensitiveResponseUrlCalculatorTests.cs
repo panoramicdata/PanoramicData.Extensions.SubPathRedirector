@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using PanoramicData.Extensions.SubPathRedirector.Helpers;
 
 namespace PanoramicData.Extensions.SubPathRedirector.Tests;
