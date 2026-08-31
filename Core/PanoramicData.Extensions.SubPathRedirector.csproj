@@ -25,6 +25,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!-- Update the following before releasing to nuget -->
     <PackageReleaseNotes>Retargeted to .NET 10.</PackageReleaseNotes>
+    <PackageId>PanoramicData.Extensions.SubPathRedirector</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
