@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [pdl-test-cluster]
     steps:
     - name: Checkout
       uses: actions/checkout@v7
@@ -19,6 +19,9 @@ jobs:
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
+      env:
+        # The runner user cannot write the default /usr/share/dotnet (OPS-157449).
+        DOTNET_INSTALL_DIR: ${{ runner.temp }}/dotnet
       with:
         dotnet-version: 10.0.x
 
