@@ -25,6 +25,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v7
+      with:
+        # Nerdbank.GitVersioning computes the version from git history, so a shallow clone fails the build.
+        fetch-depth: 0
 
     # CodeQL autobuild needs a .NET SDK; GitHub-hosted images preinstall one, our runner image does not.
     - name: Setup .NET
