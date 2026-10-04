@@ -4,6 +4,9 @@ using PanoramicData.Extensions.SubPathRedirector.Providers.ConfigurationProvider
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension methods for registering the sub path redirector with dependency injection
+/// </summary>
 public static class ServiceCollectionExtensions
 {
 	/// <summary>
@@ -56,7 +59,7 @@ public static class ServiceCollectionExtensions
 		options.Invoke(configuration);
 
 		// Register a custom configuration provider for use in retrieval of redirection config
-		_ = services.AddSingleton(typeof(IRedirectorConfigurationProvider), typeof(TConfigurationProvider));
+		_ = services.AddSingleton<IRedirectorConfigurationProvider, TConfigurationProvider>();
 		RegisterDefaultServices(services, configuration);
 
 		return services;

@@ -1,7 +1,14 @@
 namespace PanoramicData.Extensions.SubPathRedirector.Demo;
 
+/// <summary>
+/// Entry point for the demo application
+/// </summary>
 public static class Program
 {
+	/// <summary>
+	/// Start the demo web application
+	/// </summary>
+	/// <param name="args">Command-line arguments</param>
 	public static void Main(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
