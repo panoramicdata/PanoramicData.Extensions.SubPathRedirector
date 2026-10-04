@@ -122,6 +122,7 @@ public class RefreshingRedirectorConfigurationProvider : RedirectorConfiguration
 	/// to the required schedule, until the host initiates shutdown
 	/// </summary>
 	/// <param name="timeTaken">The time taken to perform the initialization task</param>
+	/// <param name="operationSucceeded">Whether initialization succeeded, which selects the refresh or retry interval</param>
 	private async Task RunRefreshAsync(TimeSpan timeTaken, bool operationSucceeded)
 	{
 		if (_scopeFactory is null)

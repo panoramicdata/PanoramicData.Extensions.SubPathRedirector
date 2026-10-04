@@ -70,7 +70,7 @@ internal class FakeHttpContextBuilder
 			var host = _requestUri.IsDefaultPort
 				? _requestUri.Host
 				: _requestUri.Host + ":" + _requestUri.Port;
-			_headers.Add("Host", host);
+			_headers["Host"] = host;
 		}
 
 		// Request

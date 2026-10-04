@@ -4,8 +4,14 @@ using PanoramicData.Extensions.SubPathRedirector.Tests.Helpers;
 
 namespace PanoramicData.Extensions.SubPathRedirector.Tests;
 
+/// <summary>
+/// Tests for <see cref="RedirectionHandler"/>
+/// </summary>
 public class RedirectionHandlerTests
 {
+	/// <summary>
+	/// A null context is rejected
+	/// </summary>
 	[Fact]
 	public void Redirect_NullRedirectionContext_ThrowsArgumentNullException()
 	{
@@ -15,6 +21,9 @@ public class RedirectionHandlerTests
 		action.Should().Throw<ArgumentNullException>();
 	}
 
+	/// <summary>
+	/// A context with no matching redirection is rejected
+	/// </summary>
 	[Fact]
 	public void Redirect_NoMatchingSubPathRedirection_ThrowsInvalidOperationException()
 	{
@@ -28,6 +37,9 @@ public class RedirectionHandlerTests
 		action.Should().Throw<InvalidOperationException>();
 	}
 
+	/// <summary>
+	/// A context with a matching redirection redirects
+	/// </summary>
 	[Fact]
 	public void Redirect_WithSubPathRedirection_Succeeds()
 	{
@@ -42,6 +54,9 @@ public class RedirectionHandlerTests
 		action.Should().NotThrow();
 	}
 
+	/// <summary>
+	/// A temporary redirection returns HTTP 302
+	/// </summary>
 	[Fact]
 	public void Redirect_ForTemporaryRedirection_SetsResultCode302()
 	{
@@ -57,6 +72,9 @@ public class RedirectionHandlerTests
 		context.Response.StatusCode.Should().Be(StatusCodes.Status302Found);
 	}
 
+	/// <summary>
+	/// A permanent redirection returns HTTP 301
+	/// </summary>
 	[Fact]
 	public void Redirect_ForPermanentRedirection_SetsResultCode301()
 	{

@@ -4,6 +4,9 @@ using PanoramicData.Extensions.SubPathRedirector.Interfaces;
 
 namespace PanoramicData.Extensions.SubPathRedirector.Providers.ConfigurationProviders;
 
+/// <summary>
+/// Base class for providers that supply redirector configuration asynchronously
+/// </summary>
 public abstract class RedirectorConfigurationProviderBase : IRedirectorConfigurationProvider, IDisposable
 {
 	private readonly object _updateLock = new();
@@ -78,7 +81,6 @@ public abstract class RedirectorConfigurationProviderBase : IRedirectorConfigura
 	/// Handle logging of an exception, if logging has been enabled
 	/// </summary>
 	/// <param name="ex">The exception that is to be logged</param>
-	/// <param name="scopeFactory">The service scope factory from which we can create scopes for accessing DI</param>
 	protected void LogException(Exception ex)
 	{
 		if (_scopeFactory is null)
@@ -98,6 +100,9 @@ public abstract class RedirectorConfigurationProviderBase : IRedirectorConfigura
 		}
 	}
 
+	/// <summary>
+	/// Dispose of the initialization task
+	/// </summary>
 	public void Dispose()
 	{
 		_initializationTask?.Dispose();

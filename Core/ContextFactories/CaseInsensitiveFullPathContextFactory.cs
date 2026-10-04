@@ -43,6 +43,7 @@ public class CaseInsensitiveFullPathContextFactory : IRedirectionContextFactory
 	/// Get the redirection associated with the requested path, or null if no redirection exists
 	/// </summary>
 	/// <param name="loweredRequestPath">The lowercase path of the request whose redirection we are trying to find</param>
+	/// <param name="config">The configuration containing the redirections to search</param>
 	/// <returns>The redirection configuration that is to be used in interception, or null if no interception is appropriate</returns>
 	private static SubPathRedirection? GetRedirection(string loweredRequestPath, SubPathRedirectorConfiguration config) =>
 		// Do very fast lookups of redirections in a case-insensitive manner by using lowercase Url

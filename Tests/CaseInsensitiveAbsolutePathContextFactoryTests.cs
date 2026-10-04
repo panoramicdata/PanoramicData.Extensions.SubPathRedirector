@@ -4,8 +4,14 @@ using PanoramicData.Extensions.SubPathRedirector.Tests.Helpers;
 
 namespace PanoramicData.Extensions.SubPathRedirector.Tests;
 
+/// <summary>
+/// Tests for <see cref="ContextFactories.CaseInsensitiveAbsolutePathContextFactory"/>
+/// </summary>
 public class CaseInsensitiveAbsolutePathContextFactoryTests
 {
+	/// <summary>
+	/// A Url matching no prefix yields no redirection
+	/// </summary>
 	[Fact]
 	public void CreateRedirectionContext_NonMatchedUrl_DoesNotDiscoverSubPathRedirection()
 	{
@@ -21,6 +27,9 @@ public class CaseInsensitiveAbsolutePathContextFactoryTests
 		requestContext.SubPathRedirection.Should().BeNull();
 	}
 
+	/// <summary>
+	/// A lowercase prefix is matched
+	/// </summary>
 	[Fact]
 	public void CreateRedirectionContext_LowerCaseSubPathPrefix_DiscoversSubPathRedirection()
 	{
@@ -37,6 +46,9 @@ public class CaseInsensitiveAbsolutePathContextFactoryTests
 		requestContext.SubPathRedirection!.RedirectionUrlPrefix.Should().Be("https://www.google.com/");
 	}
 
+	/// <summary>
+	/// A mixed-case prefix is matched case-insensitively
+	/// </summary>
 	[Fact]
 	public void CreateRedirectionContext_MixedCaseSubPathPrefix_DiscoversSubPathRedirection()
 	{
@@ -53,6 +65,9 @@ public class CaseInsensitiveAbsolutePathContextFactoryTests
 		requestContext.SubPathRedirection!.RedirectionUrlPrefix.Should().Be("https://www.google.com/");
 	}
 
+	/// <summary>
+	/// A mixed-case host does not prevent a match
+	/// </summary>
 	[Fact]
 	public void CreateRedirectionContext_MixedCaseHost_DiscoversSubPathRedirection()
 	{

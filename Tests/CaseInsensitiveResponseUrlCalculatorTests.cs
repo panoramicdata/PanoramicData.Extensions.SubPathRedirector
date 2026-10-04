@@ -3,8 +3,14 @@ using PanoramicData.Extensions.SubPathRedirector.Helpers;
 
 namespace PanoramicData.Extensions.SubPathRedirector.Tests;
 
+/// <summary>
+/// Tests for the internal CaseInsensitiveResponseUrlCalculator
+/// </summary>
 public class CaseInsensitiveResponseUrlCalculatorTests
 {
+	/// <summary>
+	/// A full Url redirection prefix produces a full Url to the resource
+	/// </summary>
 	[Fact]
 	public void Calculate_RedirectionPrefixIsFullUrl_ReturnsFullUrlToCorrectResource()
 	{
@@ -14,6 +20,9 @@ public class CaseInsensitiveResponseUrlCalculatorTests
 		result.Should().Be("http://localhost:5001/notgoogle/favicon.ico");
 	}
 
+	/// <summary>
+	/// A redirection prefix with a leading slash is handled
+	/// </summary>
 	[Fact]
 	public void Calculate_RedirectionPrefixStartsWithSlash_ReturnsUrlContainingAppropriateValue()
 	{
@@ -23,6 +32,9 @@ public class CaseInsensitiveResponseUrlCalculatorTests
 		result.Should().Be("/notgoogle/favicon.ico");
 	}
 
+	/// <summary>
+	/// A redirection prefix without a leading slash is handled
+	/// </summary>
 	[Fact]
 	public void Calculate_RedirectionPrefixDoesNotStartWithSlash_ReturnsUrlContainingAppropriateValue()
 	{
@@ -32,6 +44,9 @@ public class CaseInsensitiveResponseUrlCalculatorTests
 		result.Should().Be("notgoogle/favicon.ico");
 	}
 
+	/// <summary>
+	/// A redirection prefix with a trailing slash is handled
+	/// </summary>
 	[Fact]
 	public void Calculate_RedirectionPrefixEndsWithSlash_ReturnsUrlContainingAppropriateValue()
 	{
@@ -41,6 +56,9 @@ public class CaseInsensitiveResponseUrlCalculatorTests
 		result.Should().Be("notgoogle/favicon.ico");
 	}
 
+	/// <summary>
+	/// A redirection prefix without a trailing slash is handled
+	/// </summary>
 	[Fact]
 	public void Calculate_RedirectionPrefixDoesNotEndWithSlash_ReturnsUrlContainingAppropriateValue()
 	{
@@ -50,6 +68,9 @@ public class CaseInsensitiveResponseUrlCalculatorTests
 		result.Should().Be("notgoogle/favicon.ico");
 	}
 
+	/// <summary>
+	/// The case of the resource name after the prefix is preserved
+	/// </summary>
 	[Fact]
 	public void Calculate_RequestContainsMixedCaseResourceName_RetainsMixedCaseResourceName()
 	{
@@ -59,6 +80,9 @@ public class CaseInsensitiveResponseUrlCalculatorTests
 		result.Should().Be("notgoogle/FavIcon.ico");
 	}
 
+	/// <summary>
+	/// A mixed-case request prefix still generates the expected Url
+	/// </summary>
 	[Fact]
 	public void Calculate_RequestUrlPrefixContainsMixedCaseValue_GeneratesAppropriateUrl()
 	{
@@ -68,6 +92,9 @@ public class CaseInsensitiveResponseUrlCalculatorTests
 		result.Should().Be("notgoogle/favicon.ico");
 	}
 
+	/// <summary>
+	/// A mixed-case request Url still generates the expected Url
+	/// </summary>
 	[Fact]
 	public void Calculate_RequestUrlContainsMixedCaseValue_GeneratesAppropriateUrl()
 	{
