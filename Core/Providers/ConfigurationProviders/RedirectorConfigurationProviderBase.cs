@@ -24,7 +24,7 @@ public abstract class RedirectorConfigurationProviderBase : IRedirectorConfigura
 
 		// Set up for async initialization, but don't start the operation yet
 		_initializationTask = new Task(async () => await InitializeAsync(scopeFactory));
-		_initializationTask.ContinueWith(InitializationCompletedHandler);
+		_initializationTask.ContinueWith(_ => InitializationCompletedHandler());
 
 		// All set up; now start the operation; it will continue after we return
 		_initializationTask.Start();
@@ -43,9 +43,8 @@ public abstract class RedirectorConfigurationProviderBase : IRedirectorConfigura
 	/// <summary>
 	/// Handler that is run when async initialization has been completed
 	/// </summary>
-	/// <param name="task">The task that was performed</param>
 	/// <exception cref="InvalidOperationException">The configuration provider did not apply config during initialization</exception>
-	private void InitializationCompletedHandler(Task task)
+	private void InitializationCompletedHandler()
 	{
 		if (!_configurationApplied)
 		{
