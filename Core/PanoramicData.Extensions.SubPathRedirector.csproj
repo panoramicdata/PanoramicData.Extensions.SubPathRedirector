@@ -26,6 +26,7 @@
     <!-- Update the following before releasing to nuget -->
     <PackageReleaseNotes>Retargeted to .NET 10.</PackageReleaseNotes>
     <PackageId>PanoramicData.Extensions.SubPathRedirector</PackageId>
+    <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
