@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Demo/">
+    <Project Path="Demo/PanoramicData.Extensions.SubPathRedirector.Demo.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="README.md" />
+    <File Path="version.json" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/PanoramicData.Extensions.SubPathRedirector.Tests.csproj" />
+  </Folder>
+  <Project Path="Core/PanoramicData.Extensions.SubPathRedirector.csproj" />
+</Solution>
