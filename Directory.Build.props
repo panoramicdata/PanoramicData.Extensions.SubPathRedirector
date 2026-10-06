@@ -7,5 +7,6 @@
     <Company>Panoramic Data Limited</Company>
     <NuGetAuditMode>All</NuGetAuditMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 </Project>
