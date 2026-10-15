@@ -27,6 +27,7 @@
     <PackageReleaseNotes>Retargeted to .NET 10.</PackageReleaseNotes>
     <PackageId>PanoramicData.Extensions.SubPathRedirector</PackageId>
     <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
+    <PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -48,5 +49,8 @@
   <ItemGroup>
     <!-- Allow test projects to see internals -->
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
