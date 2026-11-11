@@ -22,7 +22,7 @@ jobs:
         # The runner user cannot write the default /usr/share/dotnet (OPS-157449).
         DOTNET_INSTALL_DIR: ${{ runner.temp }}/dotnet
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
 
     - name: Restore
       run: dotnet restore
@@ -58,7 +58,7 @@ jobs:
         # The runner user cannot write the default /usr/share/dotnet (OPS-157449).
         DOTNET_INSTALL_DIR: ${{ runner.temp }}/dotnet
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
 
     - name: Login to NuGet
       id: login
@@ -81,7 +81,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
 
     - name: Run tests with coverage
       run: dotnet test --project Tests/PanoramicData.Extensions.SubPathRedirector.Tests.csproj --coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml
