@@ -8,6 +8,8 @@
 ASP.NET Core middleware for redirecting the requests of a subpath to another application; can be useful for handling cross-application requests 
 in development.
 
+Supports .NET 11.0.
+
 It is common in cloud-hosted environments to aggregate multiple sites together using an aggregation service, such as Azure Application Gateway. 
 Whilst this works well for hosted environments, it can cause developers a problem when they run the code locally. Any inter-site links that 
 are routed to the correct site through the aggregation service when hosted on the cloud, may not route to the correct application in the local 
