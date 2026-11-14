@@ -5,6 +5,9 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/grade/PanoramicData.Extensions.SubPathRedirector)](https://app.codacy.com/gh/panoramicdata/PanoramicData.Extensions.SubPathRedirector/dashboard)
 
 # PanoramicData.Extensions.SubPathRedirector
+
+> **Need help with APIs or .NET?** Panoramic Data are experts in APIs and .NET, and we can help with your development. [Contact us](https://www.panoramicdata.com/contact-us) or see our [software services](https://www.panoramicdata.com/services/software).
+
 ASP.NET Core middleware for redirecting the requests of a subpath to another application; can be useful for handling cross-application requests 
 in development.
 
