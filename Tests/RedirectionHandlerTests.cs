@@ -88,4 +88,22 @@ public class RedirectionHandlerTests
 
 		context.Response.StatusCode.Should().Be(StatusCodes.Status301MovedPermanently);
 	}
+
+	/// <summary>
+	/// An unrecognised redirection type is rejected
+	/// </summary>
+	[Fact]
+	public void Redirect_UnrecognisedRedirectionType_ThrowsArgumentOutOfRangeException()
+	{
+		var context = RedirectionContextBuilder
+			.CreateBuilder("https://localhost:5000/google/favicon.ico")
+			.WithConfiguration(FakeSubPathRedirectorConfigurationFactory.CreateDefaultAbsolutePathConfiguration((RedirectionTypes)99))
+			.WithSubPathRedirectionAtIndex(0)
+			.Build();
+		var handler = new RedirectionHandler();
+
+		var action = () => handler.RedirectRequest(context);
+
+		action.Should().Throw<ArgumentOutOfRangeException>();
+	}
 }

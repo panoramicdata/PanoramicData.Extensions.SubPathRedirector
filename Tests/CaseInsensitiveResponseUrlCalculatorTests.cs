@@ -1,4 +1,4 @@
-using AwesomeAssertions;
+﻿using AwesomeAssertions;
 using PanoramicData.Extensions.SubPathRedirector.Helpers;
 
 namespace PanoramicData.Extensions.SubPathRedirector.Tests;
@@ -9,98 +9,35 @@ namespace PanoramicData.Extensions.SubPathRedirector.Tests;
 public class CaseInsensitiveResponseUrlCalculatorTests
 {
 	/// <summary>
-	/// A full Url redirection prefix produces a full Url to the resource
+	/// Prefix slashes and the case of the resource name are normalised as expected
 	/// </summary>
-	[Fact]
-	public void Calculate_RedirectionPrefixIsFullUrl_ReturnsFullUrlToCorrectResource()
+	[Theory]
+	[InlineData("http://localhost:5000/google/", "http://localhost:5001/notgoogle/", "http://localhost:5000/google/favicon.ico", "http://localhost:5001/notgoogle/favicon.ico")]
+	[InlineData("/google/", "/notgoogle/", "/google/favicon.ico", "/notgoogle/favicon.ico")]
+	[InlineData("/google/", "notgoogle/", "/google/favicon.ico", "notgoogle/favicon.ico")]
+	[InlineData("/google/", "notgoogle", "/google/favicon.ico", "notgoogle/favicon.ico")]
+	[InlineData("/google/", "notgoogle", "/google/FavIcon.ico", "notgoogle/FavIcon.ico")]
+	[InlineData("/Google/", "notgoogle", "/google/favicon.ico", "notgoogle/favicon.ico")]
+	[InlineData("/google/", "notgoogle", "/Google/favicon.ico", "notgoogle/favicon.ico")]
+	public void Calculate_Prefixes_ReturnsExpectedUrl(string requestPrefix, string redirectionPrefix, string requestPath, string expected)
 	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "http://localhost:5000/google/", RedirectionUrlPrefix = "http://localhost:5001/notgoogle/", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("http://localhost:5000/google/favicon.ico", config);
+		var config = new SubPathRedirection { RequestUrlPrefix = requestPrefix, RedirectionUrlPrefix = redirectionPrefix, RedirectionType = RedirectionTypes.Temporary };
 
-		result.Should().Be("http://localhost:5001/notgoogle/favicon.ico");
+		CaseInsensitiveResponseUrlCalculator.Calculate(requestPath, config).Should().Be(expected);
 	}
 
 	/// <summary>
-	/// A redirection prefix with a leading slash is handled
+	/// Null arguments are rejected
 	/// </summary>
 	[Fact]
-	public void Calculate_RedirectionPrefixStartsWithSlash_ReturnsUrlContainingAppropriateValue()
+	public void Calculate_NullArguments_Throw()
 	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "/notgoogle/", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("/google/favicon.ico", config);
+		var config = new SubPathRedirection { RequestUrlPrefix = "/a/", RedirectionUrlPrefix = "/b/" };
 
-		result.Should().Be("/notgoogle/favicon.ico");
-	}
+		var nullPath = () => CaseInsensitiveResponseUrlCalculator.Calculate(null!, config);
+		var nullRedirection = () => CaseInsensitiveResponseUrlCalculator.Calculate("/a/x", null!);
 
-	/// <summary>
-	/// A redirection prefix without a leading slash is handled
-	/// </summary>
-	[Fact]
-	public void Calculate_RedirectionPrefixDoesNotStartWithSlash_ReturnsUrlContainingAppropriateValue()
-	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "notgoogle/", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("/google/favicon.ico", config);
-
-		result.Should().Be("notgoogle/favicon.ico");
-	}
-
-	/// <summary>
-	/// A redirection prefix with a trailing slash is handled
-	/// </summary>
-	[Fact]
-	public void Calculate_RedirectionPrefixEndsWithSlash_ReturnsUrlContainingAppropriateValue()
-	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "notgoogle/", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("/google/favicon.ico", config);
-
-		result.Should().Be("notgoogle/favicon.ico");
-	}
-
-	/// <summary>
-	/// A redirection prefix without a trailing slash is handled
-	/// </summary>
-	[Fact]
-	public void Calculate_RedirectionPrefixDoesNotEndWithSlash_ReturnsUrlContainingAppropriateValue()
-	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("/google/favicon.ico", config);
-
-		result.Should().Be("notgoogle/favicon.ico");
-	}
-
-	/// <summary>
-	/// The case of the resource name after the prefix is preserved
-	/// </summary>
-	[Fact]
-	public void Calculate_RequestContainsMixedCaseResourceName_RetainsMixedCaseResourceName()
-	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("/google/FavIcon.ico", config);
-
-		result.Should().Be("notgoogle/FavIcon.ico");
-	}
-
-	/// <summary>
-	/// A mixed-case request prefix still generates the expected Url
-	/// </summary>
-	[Fact]
-	public void Calculate_RequestUrlPrefixContainsMixedCaseValue_GeneratesAppropriateUrl()
-	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "/Google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("/google/favicon.ico", config);
-
-		result.Should().Be("notgoogle/favicon.ico");
-	}
-
-	/// <summary>
-	/// A mixed-case request Url still generates the expected Url
-	/// </summary>
-	[Fact]
-	public void Calculate_RequestUrlContainsMixedCaseValue_GeneratesAppropriateUrl()
-	{
-		var config = new SubPathRedirection { RequestUrlPrefix = "/google/", RedirectionUrlPrefix = "notgoogle", RedirectionType = RedirectionTypes.Temporary };
-		var result = CaseInsensitiveResponseUrlCalculator.Calculate("/Google/favicon.ico", config);
-
-		result.Should().Be("notgoogle/favicon.ico");
+		nullPath.Should().Throw<ArgumentNullException>();
+		nullRedirection.Should().Throw<ArgumentNullException>();
 	}
 }
