@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: [pdl-test-cluster]
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v7
@@ -41,7 +41,7 @@ jobs:
 
   publish:
     needs: build
-    runs-on: [pdl-test-cluster]
+    runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     permissions:
       id-token: write
