@@ -55,6 +55,7 @@ public class RefreshingProviderTests
 
 		configurationProvider.StartInitialization(services.GetRequiredService<IServiceScopeFactory>());
 		var applied = await WaitHelper.UntilAsync(() => configurationProvider.GetConfiguration().SubPathRedirections.Count == 1);
+		await Task.Delay(100, TestContext.Current.CancellationToken);
 		lifetime.StopApplication();
 
 		applied.Should().BeTrue();
@@ -78,8 +79,10 @@ public class RefreshingProviderTests
 		await using var services = new ServiceCollection().BuildServiceProvider();
 		var configurationProvider = (IRedirectorConfigurationProvider)provider;
 
+		var initial = configurationProvider.GetConfiguration();
 		configurationProvider.StartInitialization(services.GetRequiredService<IServiceScopeFactory>());
-		var tried = await WaitHelper.UntilAsync(() => attempted);
+		var tried = await WaitHelper.UntilAsync(() => attempted && !ReferenceEquals(configurationProvider.GetConfiguration(), initial));
+		await Task.Delay(100, TestContext.Current.CancellationToken);
 		lifetime.StopApplication();
 
 		tried.Should().BeTrue();
