@@ -11,8 +11,12 @@ namespace PanoramicData.Extensions.SubPathRedirector.Tests;
 /// </summary>
 public class RefreshingProviderTests
 {
-	private static Task<SubPathRedirectorConfiguration> Retrieve(IServiceScopeFactory _, CancellationToken __)
-		=> Task.FromResult(FakeSubPathRedirectorConfigurationFactory.CreateDefaultAbsolutePathConfiguration());
+	private static Task<SubPathRedirectorConfiguration> Retrieve(IServiceScopeFactory scopeFactory, CancellationToken cancellationToken)
+	{
+		ArgumentNullException.ThrowIfNull(scopeFactory);
+		cancellationToken.ThrowIfCancellationRequested();
+		return Task.FromResult(FakeSubPathRedirectorConfigurationFactory.CreateDefaultAbsolutePathConfiguration());
+	}
 
 	/// <summary>
 	/// Intervals below the supported minimums are rejected
@@ -69,8 +73,10 @@ public class RefreshingProviderTests
 	{
 		using var lifetime = new FakeHostApplicationLifetime();
 		var attempted = false;
-		Task<SubPathRedirectorConfiguration> Fail(IServiceScopeFactory _, CancellationToken __)
+		Task<SubPathRedirectorConfiguration> Fail(IServiceScopeFactory scopeFactory, CancellationToken cancellationToken)
 		{
+			ArgumentNullException.ThrowIfNull(scopeFactory);
+			cancellationToken.ThrowIfCancellationRequested();
 			attempted = true;
 			throw new InvalidOperationException("boom");
 		}

@@ -67,11 +67,6 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-.page main .top-row a {
-    white-space: nowrap;
-    margin-left: 1.5rem;
-}
-
 .nav-item a {
     color: #d7d7d7;
     border-radius: 4px;
@@ -89,4 +84,9 @@ a, .btn-link {
 .nav-item a:hover {
     background-color: rgba(255,255,255,0.1);
     color: white;
+}
+
+.page main .top-row a {
+    white-space: nowrap;
+    margin-left: 1.5rem;
 }

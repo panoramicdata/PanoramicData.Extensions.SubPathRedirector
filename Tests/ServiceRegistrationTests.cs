@@ -157,6 +157,7 @@ public class ServiceRegistrationTests
 	{
 		protected override Task InitializeAsync(IServiceScopeFactory scopeFactory)
 		{
+			ArgumentNullException.ThrowIfNull(scopeFactory);
 			ApplyConfiguration(GoogleConfiguration());
 			return Task.CompletedTask;
 		}
