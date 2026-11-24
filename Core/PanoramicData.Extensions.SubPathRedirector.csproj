@@ -9,7 +9,6 @@
     <IsPackable>true</IsPackable>
     <Authors>Panoramic Data Limited</Authors>
     <Company>Panoramic Data Limited</Company>
-    <Copyright>Copyright © Panoramic Data Limited 2023</Copyright>
     <PackageProjectUrl>https://github.com/panoramicdata/PanoramicData.Extensions.SubPathRedirector/</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>SubPath Path Redirector</PackageTags>
