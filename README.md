@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[![Codacy Badge](https://app.codacy.com/project/badge/grade/PanoramicData.Extensions.SubPathRedirector)](https://app.codacy.com/gh/panoramicdata/PanoramicData.Extensions.SubPathRedirector/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5b58e3a3e5c24bf093402d9ec7c49079)](https://app.codacy.com/gh/panoramicdata/PanoramicData.Extensions.SubPathRedirector/dashboard)
 
 # PanoramicData.Extensions.SubPathRedirector
 
